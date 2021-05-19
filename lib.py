@@ -53,6 +53,8 @@ def get_languages_cached():
         return now - then
 
     max_age = datetime.timedelta(days=1)
+    # If cache is empty or expired try to get from upstream.
+    # But if upstream fails and we do have a cache then use cache.
     if (cached is None or get_age(cached['timestamp']) > max_age):
         logger.info('getting live')
         try:
