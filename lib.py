@@ -34,7 +34,6 @@ def get_languages_live():
     # languages = json.loads(languages_json)
     return languages_json
 
-
 def get_languages_cached():
     key = 'x:languages_cached'
     try:
