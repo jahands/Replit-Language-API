@@ -28,8 +28,11 @@ def get_languages_live():
     
     if(script is None):
         raise Exception("Couldn't find languages in upstream!")
-    
-    languages_base64 = script[script.find("'") +
+
+    # String looks like: lsdkf'<base_64_string>'lkdfj
+    # This extracts it
+    languages_base64 = script[
+        script.find("'") +
                               1:script.find("'",
                                             script.find("'") + 1)]
 
@@ -62,8 +65,8 @@ def get_languages_cached():
         except Exception as e:
             logger.exception(e)
             dblog(e)
+            # Use cached data if we can since upstream failed
             if(cached is not None):
-                # Use cached data if we can since upstream failed
                 return cached
             else:
                 raise # Send upstream (will send a 500 error to user)
