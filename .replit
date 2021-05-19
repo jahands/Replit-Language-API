@@ -1,5 +1,1 @@
-# DEV:
-run = "uvicorn main:app --port 8080 --host 0.0.0.0"
-
-# PRODUCTION:
-# run = "while $true; do gunicorn --bind 0.0.0.0:8080 -w 4 -k uvicorn.workers.UvicornWorker main:app; done"
+run = "while $true; do uvicorn main:app --port 8080 --host 0.0.0.0; done"
