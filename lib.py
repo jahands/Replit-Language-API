@@ -52,7 +52,16 @@ def get_languages_cached():
     max_age = datetime.timedelta(days=1)
     if (cached is None or get_age(cached['timestamp']) > max_age):
         logger.info('getting live')
-        languages_live = get_languages_live()
+        try:
+            languages_live = get_languages_live()
+        except Exception as e:
+            logger.exception(e)
+            dblog(e)
+            if(cached is not None):
+                # Use cached data if we can since upstream failed
+                return cached
+            else:
+                raise # Send upstream (will send a 500 error to user)
         timestamp = datetime.datetime.now().timestamp()
         pair = {'timestamp': str(timestamp), 'languages': languages_live}
         try:
