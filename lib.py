@@ -20,18 +20,22 @@ def get_languages_live():
     html_text = r.text
     soup = BeautifulSoup(html_text, 'html.parser')
 
-    languages_base64 = soup.find_all('script',
-                                     type="text/javascript")[1].string
-    languages_base64 = languages_base64[languages_base64.find("'") +
-                                        1:languages_base64.
-                                        find("'",
-                                             languages_base64.find("'") + 1)]
+    scripts = soup.find_all('script', type="text/javascript")
+    script = None
+    for s in scripts:
+        if('KNOWN_LANGUAGES' in s.string):
+            script = s.string
+    
+    if(script is None):
+        raise Exception("Couldn't find languages in upstream!")
+    
+    languages_base64 = script[script.find("'") +
+                              1:script.find("'",
+                                            script.find("'") + 1)]
 
     base64_bytes = languages_base64.encode('ascii')
     languages_json_bytes = base64.b64decode(base64_bytes)
     languages_json = languages_json_bytes.decode('ascii')
-
-    # languages = json.loads(languages_json)
     return languages_json
 
 def get_languages_cached():

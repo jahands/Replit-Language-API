@@ -1,1 +1,1 @@
-run = "while $true; do uvicorn main:app --port 8080 --host 0.0.0.0; done"
+run = "while $true; do uvicorn main:app --port 8080 --host 0.0.0.0 --workers $(nproc); done"
