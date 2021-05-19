@@ -1,7 +1,7 @@
 import json
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse,JSONResponse
 
 from lib import get_languages_cached
 from dblog import dblog
@@ -13,8 +13,7 @@ app = FastAPI()
 
 @app.get("/")
 async def read_root():
-    return RedirectResponse("https://Replit-Language-API.jahands.repl.co/docs",
-                            307)
+    return RedirectResponse("https://replit-language-api.uuid.rocks/docs", 307)
 
 
 @app.get("/api/languages")
@@ -25,4 +24,6 @@ async def get_languages():
         logger.exception(e)
         dblog(e)
         raise HTTPException(status_code=500, detail="internal server error")
-    return {"api_version": 1, "languages": json.loads(languages)}
+    content = {"api_version": 1, "languages": json.loads(languages)}
+    headers = {'Cache-Control': 'public, max-age=86400'}
+    return JSONResponse(content=content, headers=headers)
