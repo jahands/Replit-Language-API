@@ -17,6 +17,10 @@ def get_languages_live():
     global user_agent, headers, session
     lang_url = 'https://replit.com/languages'
     r = session.get(lang_url, headers=headers)
+
+    if(not r.ok()):
+        raise Exception("Couldn't get languages from upstream! http error: {0}".format(r.status_code))
+
     html_text = r.text
     soup = BeautifulSoup(html_text, 'html.parser')
 
