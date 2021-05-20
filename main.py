@@ -1,7 +1,7 @@
 import json
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import RedirectResponse,JSONResponse
+from fastapi.responses import RedirectResponse, JSONResponse
 
 from lib import get_languages_cached
 from dblog import dblog
@@ -27,6 +27,7 @@ async def get_languages():
     content = {"api_version": 1, "languages": json.loads(languages)}
     headers = {'Cache-Control': 'public, max-age=86400'}
     return JSONResponse(content=content, headers=headers)
+
 
 @app.get("/api/languages/keys")
 async def get_languages_keys():

@@ -3,10 +3,10 @@ from replit import db
 import pytz
 import datetime
 
-
 logkey = 'x:logger'
-if(db.get(logkey) is None):
+if (db.get(logkey) is None):
     db[logkey] = []
+
 
 def dblog(log_str):
     log = deque(db[logkey], maxlen=500)

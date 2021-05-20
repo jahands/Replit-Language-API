@@ -23,16 +23,15 @@ def get_languages_live():
     scripts = soup.find_all('script', type="text/javascript")
     script = None
     for s in scripts:
-        if('KNOWN_LANGUAGES' in s.string):
+        if ('KNOWN_LANGUAGES' in s.string):
             script = s.string
-    
-    if(script is None):
+
+    if (script is None):
         raise Exception("Couldn't find languages in upstream!")
 
     # String looks like: lsdkf'<base_64_string>'lkdfj
     # This extracts it
-    languages_base64 = script[
-        script.find("'") +
+    languages_base64 = script[script.find("'") +
                               1:script.find("'",
                                             script.find("'") + 1)]
 
@@ -40,6 +39,7 @@ def get_languages_live():
     languages_json_bytes = base64.b64decode(base64_bytes)
     languages_json = languages_json_bytes.decode('ascii')
     return languages_json
+
 
 def get_languages_cached():
     key = 'x:languages_cached'
@@ -66,10 +66,10 @@ def get_languages_cached():
             logger.exception(e)
             dblog(e)
             # Use cached data if we can since upstream failed
-            if(cached is not None):
+            if (cached is not None):
                 return cached
             else:
-                raise # Send upstream (will send a 500 error to user)
+                raise  # Send upstream (will send a 500 error to user)
         timestamp = datetime.datetime.now().timestamp()
         pair = {'timestamp': str(timestamp), 'languages': languages_live}
         try:
