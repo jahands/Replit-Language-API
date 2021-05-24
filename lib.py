@@ -18,7 +18,7 @@ def get_languages_live():
     lang_url = 'https://replit.com/languages'
     r = session.get(lang_url, headers=headers)
 
-    if(not r.ok()):
+    if(not r.ok):
         raise Exception("Couldn't get languages from upstream! http error: {0}".format(r.status_code))
 
     html_text = r.text

@@ -24,7 +24,12 @@ async def get_languages():
         logger.exception(e)
         dblog(e)
         raise HTTPException(status_code=500, detail="internal server error")
-    content = {"api_version": 1, "languages": json.loads(languages)}
+    content = {
+        "api_version":
+        1,
+        "languages":
+        json.loads(languages)
+    }
     headers = {'Cache-Control': 'public, max-age=86400'}
     return JSONResponse(content=content, headers=headers)
 
