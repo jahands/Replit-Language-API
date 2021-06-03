@@ -71,7 +71,7 @@ def get_languages_cached():
             dblog(e)
             # Use cached data if we can since upstream failed
             if (cached is not None):
-                return cached
+                return cached['languages']
             else:
                 raise  # Send upstream (will send a 500 error to user)
         timestamp = datetime.datetime.now().timestamp()
