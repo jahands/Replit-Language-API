@@ -1,11 +1,12 @@
 import json
+import os
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse, JSONResponse
 
 from lib import get_languages_cached
-from dblog import dblog
 from logzero import logger
+
 
 app = FastAPI()
 # FastAPI docs: https://fastapi.tiangolo.com/
@@ -22,7 +23,6 @@ async def get_languages():
         languages = get_languages_cached()
     except Exception as e:
         logger.exception(e)
-        dblog(e)
         raise HTTPException(status_code=500, detail="internal server error")
     content = {
         "api_version":
@@ -44,7 +44,6 @@ async def get_languages_keys():
 
     except Exception as e:
         logger.exception(e)
-        dblog(e)
         raise HTTPException(status_code=500, detail="internal server error")
     content = {"api_version": 1, "language_keys": language_keys}
     headers = {'Cache-Control': 'public, max-age=86400'}

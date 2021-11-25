@@ -1,9 +1,10 @@
 from bs4 import BeautifulSoup
-from replit import db
 import base64
 import datetime
+import redis
 from logzero import logger
-from dblog import dblog
+import os
+import json
 
 import requests
 
@@ -12,6 +13,9 @@ headers = {"User-Agent": user_agent}
 
 session = requests.Session()
 
+r = redis.Redis(host=os.environ['REDISHOST'], port=os.environ['REDISPORT'],
+                username=os.environ['REDISUSER'], password=os.environ['REDISPASSWORD'], db=0, decode_responses=True)
+
 
 def get_languages_live():
     global user_agent, headers, session
@@ -19,7 +23,8 @@ def get_languages_live():
     r = session.get(lang_url, headers=headers)
 
     if(not r.ok):
-        raise Exception("Couldn't get languages from upstream! http error: {0}".format(r.status_code))
+        raise Exception(
+            "Couldn't get languages from upstream! http error: {0}".format(r.status_code))
 
     html_text = r.text
     soup = BeautifulSoup(html_text, 'html.parser')
@@ -48,11 +53,10 @@ def get_languages_live():
 def get_languages_cached():
     key = 'x:languages_cached'
     try:
-        cached = db.get(key)
+        cached = json.loads(r.get(key))
     except Exception as e:
         cached = None  # default to getting live if db fails
         logger.exception(e)
-        dblog(e)
 
     def get_age(timestamp_str):
         now = datetime.datetime.now()
@@ -68,7 +72,6 @@ def get_languages_cached():
             languages_live = get_languages_live()
         except Exception as e:
             logger.exception(e)
-            dblog(e)
             # Use cached data if we can since upstream failed
             if (cached is not None):
                 return cached['languages']
@@ -77,10 +80,9 @@ def get_languages_cached():
         timestamp = datetime.datetime.now().timestamp()
         pair = {'timestamp': str(timestamp), 'languages': languages_live}
         try:
-            db[key] = pair
+            r.set(key, json.dumps(pair))
         except Exception as e:  # If db fails we'll try again next time
             logger.exception(e)
-            dblog(e)
         return languages_live
     else:  # return cached
         logger.info('using cached')
