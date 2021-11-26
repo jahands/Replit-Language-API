@@ -18,7 +18,9 @@ async def read_root():
 
 @app.get("/ping")
 async def get_ping():
-    return JSONResponse({"message": "pong"})
+    # Store for 5 seconds to prevent ddos
+    headers = {'Cache-Control': 'public, max-age=5'}
+    return JSONResponse({"message": "pong"}, headers=headers)
 
 
 @app.get("/api/languages")
