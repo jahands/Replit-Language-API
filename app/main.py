@@ -16,6 +16,10 @@ app = FastAPI()
 async def read_root():
     return RedirectResponse("https://replit-language-api.uuid.rocks/docs", 307)
 
+@app.get("/ping")
+async def get_ping():
+    return JSONResponse({"message": "pong"})
+
 
 @app.get("/api/languages")
 async def get_languages():
