@@ -14,7 +14,8 @@ app = FastAPI()
 
 @app.get("/")
 async def read_root():
-    return RedirectResponse("https://replit-language-api.uuid.rocks/docs", 307)
+    headers = {'Cache-Control': 'public, max-age=86400'}
+    return RedirectResponse("https://replit-language-api.uuid.rocks/docs", 307, headers=headers)
 
 @app.get("/ping")
 async def get_ping():
