@@ -12,6 +12,7 @@ logzero = "^1.7.0"
 fastapi = "^0.65.1"
 uvicorn = {extras = ["standard"], version = "^0.13.4"}
 redis = "^4.0.2"
+gunicorn = "^20.1.0"
 
 [tool.poetry.dev-dependencies]
 
