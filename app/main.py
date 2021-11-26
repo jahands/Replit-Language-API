@@ -14,13 +14,13 @@ app = FastAPI()
 
 @app.get("/")
 async def read_root():
-    headers = {'Cache-Control': 'public, max-age=3600', 'Cloudflare-CDN-Cache-Control': 'public, max-age=86400'}
+    headers = {'Cache-Control': 'max-age=3600', 'Cloudflare-CDN-Cache-Control': 'max-age=86400'}
     return RedirectResponse("https://replit-language-api.uuid.rocks/docs", 307, headers=headers)
 
 @app.get("/ping")
 async def get_ping():
     # Store for 5 seconds to prevent ddos
-    headers = {'Cache-Control': 'public, max-age=5', 'Cloudflare-CDN-Cache-Control': 'public, max-age=5'}
+    headers = {'Cache-Control': 'max-age=5', 'Cloudflare-CDN-Cache-Control': 'max-age=5'}
     return JSONResponse({"message": "pong"}, headers=headers)
 
 
@@ -37,7 +37,7 @@ async def get_languages():
         "languages":
         json.loads(languages)
     }
-    headers = {'Cache-Control': 'public, max-age=3600', 'Cloudflare-CDN-Cache-Control': 'public, max-age=86400'}
+    headers = {'Cache-Control': 'max-age=3600', 'Cloudflare-CDN-Cache-Control': 'max-age=86400'}
     return JSONResponse(content=content, headers=headers)
 
 
@@ -53,5 +53,5 @@ async def get_languages_keys():
         logger.exception(e)
         raise HTTPException(status_code=500, detail="internal server error")
     content = {"api_version": 1, "language_keys": language_keys}
-    headers = {'Cache-Control': 'public, max-age=3600', 'Cloudflare-CDN-Cache-Control': 'public, max-age=86400'}
+    headers = {'Cache-Control': 'max-age=3600', 'Cloudflare-CDN-Cache-Control': 'max-age=86400'}
     return JSONResponse(content=content, headers=headers)
