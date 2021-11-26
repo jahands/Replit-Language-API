@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.9-slim-bullseye
 RUN mkdir /app 
 COPY /app /app
 COPY pyproject.toml /app 
