@@ -1,6 +1,7 @@
 name = "replit-language-api"
 main = "src/index.ts"
 compatibility_date = "2022-07-17"
+usage_model = "unbound"
 routes = ["replit-language-api.uuid.rocks/*"]
 
 kv_namespaces = [
