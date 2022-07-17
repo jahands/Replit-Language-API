@@ -96,12 +96,13 @@ async function getLanguagesLive(): Promise<any | null> {
   const selector = "script";
   let script = "";
   let foundEnd = false;
-  let foundStart = false;
+	let foundStart = false;
+	const startPrefix = `JSON.parse(atob('`;
+  const endPrefix = `'))`;
   rewriter.on(selector, {
     // element(element) {},
-
     text(text) {
-      if (text.text.includes("KNOWN_LANGUAGES")) {
+      if (text.text.includes(startPrefix) && text.text.includes("KNOWN_LANGUAGES")) {
         foundStart = true;
       }
       if (foundStart && !foundEnd) {
@@ -114,8 +115,6 @@ async function getLanguagesLive(): Promise<any | null> {
   });
   const transformed = rewriter.transform(response);
   await transformed.text();
-  const startPrefix = `JSON.parse(atob('`;
-  const endPrefix = `'))`;
   const startIndex = script.indexOf(startPrefix) + startPrefix.length;
   const endIndex = script.indexOf(endPrefix);
   const languagesBase64 = script.substring(startIndex, endIndex);
