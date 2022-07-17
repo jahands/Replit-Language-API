@@ -134,9 +134,8 @@ async function getLanguagesCached(
   const { value, metadata } = await env.CACHE.getWithMetadata(key, "json");
   if (value) {
     const timestamp = (metadata as Meta).timestamp;
-    const now = Date.now();
-    if (now - timestamp < 60 * 60 * 24 * 1000) {
-      // 1 day
+    // Try to refresh once a day
+    if (Date.now() - timestamp < 60 * 60 * 24 * 1000) {
       return value;
     } else {
       // Try to get live value
