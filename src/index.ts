@@ -125,6 +125,7 @@ async function getLanguagesLive(): Promise<any | null> {
 type Meta = {
   timestamp: number;
 };
+
 async function getLanguagesCached(
   env: Env,
   ctx: ExecutionContext
