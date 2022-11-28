@@ -96,13 +96,16 @@ async function getLanguagesLive(): Promise<any | null> {
   const selector = "script";
   let script = "";
   let foundEnd = false;
-	let foundStart = false;
-	const startPrefix = `JSON.parse(atob('`;
+  let foundStart = false;
+  const startPrefix = `JSON.parse(atob('`;
   const endPrefix = `'))`;
   rewriter.on(selector, {
     // element(element) {},
     text(text) {
-      if (text.text.includes(startPrefix) && text.text.includes("KNOWN_LANGUAGES")) {
+      if (
+        text.text.includes(startPrefix) &&
+        text.text.includes("KNOWN_LANGUAGES")
+      ) {
         foundStart = true;
       }
       if (foundStart && !foundEnd) {
