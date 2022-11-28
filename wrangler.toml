@@ -4,6 +4,7 @@ compatibility_date = "2022-07-17"
 usage_model = "unbound"
 routes = ["replit-language-api.uuid.rocks/*"]
 
-kv_namespaces = [
-  { binding = "CACHE", id = "57ab8ed3d80f41899297508c1b84042e", preview_id = "57ab8ed3d80f41899297508c1b84042e" }
-]
+[[kv_namespaces]]
+binding = "CACHE"
+id = "57ab8ed3d80f41899297508c1b84042e"
+preview_id = "57ab8ed3d80f41899297508c1b84042e"
