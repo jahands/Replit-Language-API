@@ -1,13 +1,8 @@
 import { Router } from 'itty-router'
 import { getLanguagesCached } from "./languages"
-import { cacheAndServe } from './cache'
+import { cacheAndServe, defaultCacheHeaders } from './cache'
 
 import { Env, IRequest, IMethods } from "./types"
-
-const defaultCacheHeaders = {
-	'Cache-Control': 'public, max-age=3600',
-	'Cloudflare-CDN-Cache-Control': 'public, max-age=86400',
-}
 
 const router = Router<IRequest, IMethods>()
 	.get('*', serveFromCache)
