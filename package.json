@@ -12,5 +12,8 @@
 		"start": "wrangler dev",
 		"deploy": "wrangler publish",
 		"format": "npx prettier --write src"
+	},
+	"dependencies": {
+		"itty-router": "^2.6.6"
 	}
 }
